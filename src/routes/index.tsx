@@ -229,9 +229,9 @@ function Index() {
               className="rise text-balance font-mono text-[clamp(2.6rem,7vw,5rem)] font-bold leading-[0.95] tracking-tight"
               style={{ animationDelay: "60ms" }}
             >
-              SHAHNAWAZ
-              <br />
               USAMA
+              <br />
+              SHAHNAWAZ
             </h1>
             <p
               className="rise mt-6 max-w-[52ch] text-pretty text-lg text-muted-foreground"
@@ -321,14 +321,14 @@ function Index() {
             <div className="space-y-5">
               {SKILLS.map((group) => (
                 <div key={group.category}>
-                  <div className="mb-2 font-mono text-[12px] text-foreground">
+                  <div className="mb-2 font-mono text-[12px] font-medium text-foreground">
                     {group.category}
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {group.items.map((item) => (
                       <span
                         key={item}
-                        className="rounded border border-border bg-card px-2 py-1 font-mono text-[11px] text-muted-foreground"
+                        className="rounded border border-border bg-secondary px-2 py-1 font-mono text-[11px] text-foreground/85 transition-colors hover:border-primary/50 hover:text-foreground"
                       >
                         {item}
                       </span>
