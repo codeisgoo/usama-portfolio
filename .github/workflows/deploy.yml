@@ -29,24 +29,21 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Find build output and prepare for Pages
+      - name: Prepare Pages folder
         run: |
-          for dir in .output/public dist/client dist build/client build; do
-            if [ -f "$dir/index.html" ]; then
-              OUTPUT_DIR="$dir"
-              break
-            fi
-          done
+          OUTPUT_DIR=.output/public
+          echo "Contents of $OUTPUT_DIR:"
+          ls -la "$OUTPUT_DIR"
 
-          if [ -z "$OUTPUT_DIR" ]; then
-            echo "No index.html found. Folders that contain one:"
-            find . -name index.html -not -path "./node_modules/*"
-            echo "Build folders present:"
-            ls -la . .output dist 2>/dev/null || true
-            exit 1
+          if [ ! -f "$OUTPUT_DIR/index.html" ]; then
+            if [ -f "$OUTPUT_DIR/_shell.html" ]; then
+              cp "$OUTPUT_DIR/_shell.html" "$OUTPUT_DIR/index.html"
+            else
+              echo "No index.html or _shell.html found. SPA mode is not enabled in vite.config.ts."
+              exit 1
+            fi
           fi
 
-          echo "Using $OUTPUT_DIR"
           cp "$OUTPUT_DIR/index.html" "$OUTPUT_DIR/404.html"
           touch "$OUTPUT_DIR/.nojekyll"
           echo "OUTPUT_DIR=$OUTPUT_DIR" >> "$GITHUB_ENV"
