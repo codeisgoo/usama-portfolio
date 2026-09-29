@@ -1,8 +1,9 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+   import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig({
-  tanstackStart: {
-    server: { entry: "server" },
-    spa: { enabled: true },
-  },
-});
+   export default defineConfig({
+     tanstackStart: {
+       server: { entry: "server" },
+       spa: { enabled: true },
+     },
+     vite: { base: "/usama-portfolio/" },
+   });
