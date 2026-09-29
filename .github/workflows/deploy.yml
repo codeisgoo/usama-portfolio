@@ -18,18 +18,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - name: Prepare Pages folder
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Find build output and prepare for Pages
         run: |
-          OUTPUT_DIR=.output/public
+          for dir in .output/public dist/client dist build/client build; do
+            if [ -f "$dir/index.html" ]; then
+              OUTPUT_DIR="$dir"
+              break
+            fi
+          done
+
+          if [ -z "$OUTPUT_DIR" ]; then
+            echo "No index.html found. Folders that contain one:"
+            find . -name index.html -not -path "./node_modules/*"
+            echo "Build folders present:"
+            ls -la . .output dist 2>/dev/null || true
+            exit 1
+          fi
+
+          echo "Using $OUTPUT_DIR"
           cp "$OUTPUT_DIR/index.html" "$OUTPUT_DIR/404.html"
           touch "$OUTPUT_DIR/.nojekyll"
-          echo "OUTPUT_DIR=$OUTPUT_DIR" >> $GITHUB_ENV
+          echo "OUTPUT_DIR=$OUTPUT_DIR" >> "$GITHUB_ENV"
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ env.OUTPUT_DIR }}
