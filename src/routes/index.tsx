@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import cvAsset from "@/assets/cv.pdf.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -23,7 +22,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const CV_URL = cvAsset.url;
+const CV_URL = `${import.meta.env.BASE_URL}DevOps_Resume_Usama_Shahnawaz.pdf`;
 
 const METRICS = [
   { value: "40%", label: "faster deploys", tone: "text-primary" },
